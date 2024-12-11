@@ -1,67 +1,114 @@
-const tasksByDay = JSON.parse(localStorage.getItem('tasksByDay')) || {};
-let currentDay = 1;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-function saveTasks() {
-    localStorage.setItem('tasksByDay', JSON.stringify(tasksByDay));
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e3f2fd;
+    margin: 0;
+    padding: 0;
 }
-
-function updateDayView() {
-    const dayView = document.getElementById('day-view');
-    const dayTitle = dayView.querySelector('h3');
-    const taskList = dayView.querySelector('.tasks ul');
-
-    dayTitle.textContent = `December ${currentDay}`;
-    taskList.innerHTML = '';
-
-    const tasks = tasksByDay[currentDay] || [];
-    tasks.forEach(taskText => {
-        const li = document.createElement('li');
-
-        const taskSpan = document.createElement('span');
-        taskSpan.textContent = taskText;
-        li.appendChild(taskSpan);
-
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.className = 'remove';
-        removeButton.onclick = () => {
-            tasksByDay[currentDay] = tasksByDay[currentDay].filter(task => task !== taskText);
-            saveTasks();
-            updateDayView();
-        };
-        li.appendChild(removeButton);
-
-        taskList.appendChild(li);
-    });
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: linear-gradient(135deg, #ffffff, #f0f4c3);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-document.getElementById('prev-day').addEventListener('click', () => {
-    if (currentDay > 1) {
-        currentDay--;
-        updateDayView();
-        document.getElementById('current-day').textContent = `December ${currentDay}`;
-    }
-});
-
-document.getElementById('next-day').addEventListener('click', () => {
-    if (currentDay < 31) {
-        currentDay++;
-        updateDayView();
-        document.getElementById('current-day').textContent = `December ${currentDay}`;
-    }
-});
-
-document.querySelector('.add-task button').addEventListener('click', () => {
-    const input = document.querySelector('.add-task input');
-    const taskText = input.value.trim();
-    if (taskText === '') return;
-
-    if (!tasksByDay[currentDay]) tasksByDay[currentDay] = [];
-    tasksByDay[currentDay].push(taskText);
-
-    input.value = '';
-    saveTasks();
-    updateDayView();
-});
-
-updateDayView();
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.navigation button {
+    padding: 10px 15px;
+    border: none;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.navigation button:hover {
+    background: linear-gradient(135deg, #1e88e5, #1976d2);
+}
+.day {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.tasks {
+    margin-top: 10px;
+    text-align: left;
+}
+.tasks ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.tasks li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+}
+.tasks li span {
+    flex: 1;
+    text-decoration: none;
+}
+.tasks li.completed span {
+    text-decoration: line-through;
+    color: #9e9e9e;
+}
+.toggle {
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.toggle:hover {
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+}
+.add-task {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+.add-task input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #b0bec5;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.add-task button {
+    padding: 10px 15px;
+    border: none;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.add-task button:hover {
+    background: linear-gradient(135deg, #1e88e5, #1976d2);
+}
